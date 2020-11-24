@@ -5,6 +5,7 @@ from typing import Any, Callable, Union
 from base import BaseLinkedList
 from node import Node
 
+
 class SinglyLinkedList(BaseLinkedList):
     """Implements a Singly Linked List"""
 
@@ -69,10 +70,10 @@ class SinglyLinkedList(BaseLinkedList):
     def __len__(self) -> int:
         return self._size
 
-
     def accepts(*types):
         def check_accepts(f):
             assert len(types) == f.__code__.co_argcount
+
             def new_f(*args, **kwds):
                 for (a, t) in zip(args, types):
                     assert isinstance(a, t), \
@@ -82,12 +83,10 @@ class SinglyLinkedList(BaseLinkedList):
             return new_f
         return check_accepts
 
-
     def handle_index(func) -> Callable:
         """Makes sure the indexes are valid are of type int"""
 
         def new_func(self, *args):
-            print(args)
             index = args[0]
             if not isinstance(index, (int, slice)):
                 return TypeError(
@@ -129,12 +128,38 @@ class SinglyLinkedList(BaseLinkedList):
     def __iter__(self):
         raise NotImplementedError
 
-    @handle_index
     def pop(self, index=-1) -> Any:
         """Removes the node at the end of the list
         and returns it's value
         """
-        pass
+
+        if index < 0:
+            index += self.size
+
+        if index == 0:
+            node = self.head
+            self.head = self.head.next_node
+            self.size -= 1
+            return node.val
+
+        reset_tail = index == self.size-1
+
+        prev = Node(0, self.head)
+        node = self.head.next_node
+
+        for i in range(index):
+            prev = prev.next_node
+            node = node.next_node
+
+        removed = prev.next_node
+        prev.next_node = node
+
+        if reset_tail:
+            self.tail = prev
+        
+        prev = prev.next_node
+        self.size -= 1
+        return removed.val
 
     def remove(self, value) -> None:
         raise NotImplementedError

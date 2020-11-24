@@ -26,8 +26,16 @@ def main2():
     print(sll)
     print(len(sll))
     sll[-9] = 100
-    print(sll[-9])
-    print(sll[1:3])
+    print(sll[7])
+    print("~~~~~~~~")
+    print(sll)
+    print(len(sll))
+    
+    while(sll):
+        sll.pop()
+        print(sll)
+    
+    # print(sll.tail)
 
 if __name__ == '__main__':
     main2()
