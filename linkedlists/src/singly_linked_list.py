@@ -60,8 +60,8 @@ class SinglyLinkedList(BaseLinkedList):
             self.head = Node(val)
             self.tail = self.head
         else:
-            self.tail.next_node = Node(val)
-            self.tail = self.tail.next_node
+            self.tail.next = Node(val)
+            self.tail = self.tail.next
         self.size += 1
 
     def appendleft(self):
@@ -110,7 +110,7 @@ class SinglyLinkedList(BaseLinkedList):
                 index += self.size
             node = self.head
             for i in range(index):
-                node = node.next_node
+                node = node.next
             node.val = value
 
     @handle_index
@@ -122,7 +122,7 @@ class SinglyLinkedList(BaseLinkedList):
                 index += self.size
             node = self.head
             for i in range(index):
-                node = node.next_node
+                node = node.next
             return node.val
 
     def __iter__(self):
@@ -138,31 +138,54 @@ class SinglyLinkedList(BaseLinkedList):
 
         if index == 0:
             node = self.head
-            self.head = self.head.next_node
+            self.head = self.head.next
             self.size -= 1
             return node.val
 
         reset_tail = index == self.size-1
 
         prev = Node(0, self.head)
-        node = self.head.next_node
+        node = self.head.next
 
         for i in range(index):
-            prev = prev.next_node
-            node = node.next_node
+            prev = prev.next
+            node = node.next
 
-        removed = prev.next_node
-        prev.next_node = node
+        removed = prev.next
+        prev.next = node
 
         if reset_tail:
             self.tail = prev
-        
-        prev = prev.next_node
+
+        prev = prev.next
         self.size -= 1
         return removed.val
 
     def remove(self, value) -> None:
-        raise NotImplementedError
+        """Remove the first item from the list whose value is equal to x. 
+        It raises a ValueError if there is no such item."""
+        node = self.head
+
+        # value is in head
+        if self.head.val == value:
+            self.head = self.head.next
+            # reset tail if list becomes empty
+            if self.head is None:
+                self.tail = None
+            return
+
+        prev = self.head
+        node = self.head.next
+        while node:
+            if node.val == value:
+                prev.next=node.next
+                if prev.next is None:
+                    self.tail = prev
+                return
+            prev = prev.next
+            node = node.next
+
+        raise ValueError(f"No node with value = {value}")
 
     def sort(self):
         """Sorts the linked list in ascending order"""
@@ -173,5 +196,5 @@ class SinglyLinkedList(BaseLinkedList):
         node = self.head
         while node:
             out += str(node.val) + '->'
-            node = node.next_node
+            node = node.next
         return out + 'None'

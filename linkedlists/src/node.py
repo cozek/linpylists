@@ -3,31 +3,31 @@ from base import BaseNode
 class Node(BaseNode):
     """Implements node of the liked list"""
 
-    def __init__(self, val=0, next_node=None):
+    def __init__(self, val=0, next=None):
         self._val = val
-        self._next_node = next_node
+        self._next = next
 
     @property
     def val(self):
         return self._val
 
     @property
-    def next_node(self):
-        return self._next_node
+    def next(self):
+        return self._next
 
     @val.setter
     def val(self, val):
         self._val = val
 
-    @next_node.setter
-    def next_node(self, node):
+    @next.setter
+    def next(self, node):
         if node is not None and not isinstance(node, Node):
-            raise TypeError(f'next_node must be of type Node or None')
+            raise TypeError(f'next must be of type Node or None')
         else:
-            self._next_node = node
+            self._next = node
 
     def __repr__(self):
-        return f"Node({self.val, self.next_node})"
+        return f"Node({self.val, self.next})"
 
 if __name__ == '__main__':
     a = Node()

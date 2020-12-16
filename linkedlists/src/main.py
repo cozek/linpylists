@@ -34,8 +34,22 @@ def main2():
     while(sll):
         sll.pop()
         print(sll)
-    
     # print(sll.tail)
 
+def test_remove():
+    sll = SinglyLinkedList()
+    arr = [1,2,3,4,5,5,8,9]
+    for i in arr:
+        sll.append(i)
+    print(sll)
+
+    # sll.remove(1)
+    # print(sll)
+    sll.remove(11)
+    print(sll)
+    print(sll.tail)
+    print(sll.head)
+
+
 if __name__ == '__main__':
-    main2()
+    test_remove()
